@@ -161,6 +161,17 @@ public class DoubleLinkedList implements ILinkedList {
     }
     
     public void remove(int index) {
+      if(index == 0){
+          Node tmp = head.next;
+          tmp.prev = null;
+          head = tmp;
+      }
+      else if(index == size-1){
+          Node tmp = tail.prev;
+          tmp.next = null;
+          tail = tmp;
+      }
+      else{
         Node tmp = head;
         for(int i=0;i<index;i++){
             tmp = tmp.next;
@@ -169,6 +180,7 @@ public class DoubleLinkedList implements ILinkedList {
         Node bfrTmp = tmp.prev;
         aftrTmp.prev = bfrTmp;
         bfrTmp.next = aftrTmp;
+      }
         size--;
     }
     
