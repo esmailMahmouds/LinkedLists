@@ -65,7 +65,7 @@ public class DoubleLinkedList implements ILinkedList {
 
     private Node head;
     private Node tail;
-    private int size;
+    public int size;
     class Node{
         private int element;
         private Node next;
@@ -79,14 +79,18 @@ public class DoubleLinkedList implements ILinkedList {
     public DoubleLinkedList(){
         this.head = null;
         this.tail = null;
-        size = 0;
     }
     
     public void add(int index, Object element){
         Node node = new Node((int)element,null,null);
+        if(index == 0){
+            node.next = head;
+            head = node;
+        }
+        else{
         Node tmp1 = head;
         Node tmp2;
-        for(int i=1;i<index;i++){
+        for(int i=0;i<index;i++){
             tmp1 = tmp1.next;
         }
         tmp2 = tmp1.prev;
@@ -94,6 +98,8 @@ public class DoubleLinkedList implements ILinkedList {
         node.prev = tmp2;
         tmp1.prev = node;
         node.next = tmp1;
+        }
+        size++;
     }
     
     public void add(Object element){
@@ -111,7 +117,7 @@ public class DoubleLinkedList implements ILinkedList {
     
     public Object get(int index) {
         Node arwd = head;
-        for(int i=1;i<index;i++){
+        for(int i=0;i<index;i++){
             arwd = arwd.next;
         }
         return arwd.element;
@@ -119,16 +125,30 @@ public class DoubleLinkedList implements ILinkedList {
     
     public void set(int index, Object element) {
         Node node = new Node((int)element,null,null);
-        Node tmp = head;
-        for(int i=1;i<index;i++){
-            tmp = tmp.next;
+        if(index == 0){
+            Node tmp = head.next;
+            tmp.prev = node;
+            node.next = tmp;
+            head = node;
         }
-        Node aftrTmp = tmp.next;
-        Node bfrTmp = tmp.prev;
-        aftrTmp.prev = node;
-        bfrTmp.next = node;
-        node.next = aftrTmp;
-        node.prev = bfrTmp;
+        else if(index == size-1){
+            Node tmp = tail.prev;
+            tmp.next = node;
+            node.prev = tmp;
+            tail = node;
+        }
+        else{
+            Node tmp = head.next;
+            for(int i=1;i<index;i++){
+                tmp = tmp.next;
+            }
+            Node aftrTmp = tmp.next;
+            Node bfrTmp = tmp.prev;
+            aftrTmp.prev = node;
+            bfrTmp.next = node;
+            node.next = aftrTmp;
+            node.prev = bfrTmp;
+            }
     }
     
     public void clear() {
@@ -141,8 +161,15 @@ public class DoubleLinkedList implements ILinkedList {
     }
     
     public void remove(int index) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'remove'");
+        Node tmp = head;
+        for(int i=0;i<index;i++){
+            tmp = tmp.next;
+        }
+        Node aftrTmp = tmp.next;
+        Node bfrTmp = tmp.prev;
+        aftrTmp.prev = bfrTmp;
+        bfrTmp.next = aftrTmp;
+        size--;
     }
     
     public int size() {
@@ -150,8 +177,15 @@ public class DoubleLinkedList implements ILinkedList {
     }
     
     public ILinkedList sublist(int fromIndex, int toIndex) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sublist'");
+        ILinkedList Sblst = new DoubleLinkedList(); 
+        Node begTmp = head;
+        for(int i=0;i<size;i++){
+           if(i>=fromIndex && i<=toIndex){
+                Sblst.add(begTmp.element);
+            }
+            begTmp = begTmp.next;
+        }
+        return Sblst;
     }
     
     public boolean contains(Object o) {
@@ -165,6 +199,15 @@ public class DoubleLinkedList implements ILinkedList {
                 srchNd = srchNd.next;
         }
         return false;
+    }
+
+    public void printList(Node node){
+        System.out.print("["+node.element);
+        while(node.next != null){
+            node = node.next;
+            System.out.print(", "+node.element);
+        }
+        System.out.print("]");
     }
 
     public static void main(String[] args) {
@@ -181,55 +224,86 @@ public class DoubleLinkedList implements ILinkedList {
                 break;
             }
         }
-        sc.close();
-        list.set(3, 13);;
-        Node node = list.head;
-        while(node != null){
-            System.out.println(node.element);
-            node = node.next;
-        }
-        /*
         String s2 = sc.nextLine();
         switch(s2){
-                case("add"):
-                    String lastElement = sc.nextLine();
-                
-                    break;
-                case("addToIndex"):
-                    int addIndex = sc.nextInt();
-                    sc.nextLine();
-                    String valueOfAddedElement = sc.nextLine();
-                
-                    break;
-                case("get"):
-                    int getIndex = sc.nextInt();
-                
-                    break;
-                case("set"):
-                    int setIndex = sc.nextInt();
-                    sc.nextLine();
-                    String valueOfSetElement = sc.nextLine();
-                
-                    break;
-                case("clear"):
-                    
-                    break;
-                case("isEmpty"):
-                    
-                    break;
-                case("remove"):
-                    int removeIndex = sc.nextInt();
-                
-                    break;
-                case("sublist"):
-                    int startIndex = sc.nextInt();
-                    int endIndex = sc.nextInt();
-                    break;
-                case("contains"):
-                    String valueOfMissingElement = sc.nextLine();
-                    break;
+            case("add"):
+                int lastElement = sc.nextInt();
+                list.add(lastElement);
+                list.printList(list.head);
+                break;
+            case("addToIndex"):
+                int addIndex = sc.nextInt();
+                int valueOfAddedElement = sc.nextInt();
+                if(addIndex<list.size && addIndex>=0){
+                    list.add(addIndex, valueOfAddedElement);
+                    list.printList(list.head);}
+                else
+                    System.out.println("Error");
+                break;
+            case("get"):
+                int getIndex = sc.nextInt();
+                if(getIndex<list.size && getIndex>=0)
+                    System.out.println(list.get(getIndex));
+                else
+                    System.out.println("Error");
+                break;
+            case("set"):
+                int setIndex = sc.nextInt();
+                int valueOfSetElement = sc.nextInt();
+                if(setIndex<list.size && setIndex>=0){
+                    list.set(setIndex, valueOfSetElement);
+                    list.printList(list.head);
+                }
+                else
+                    System.out.println("Error");
+                break;
+            case("clear"):
+                list.clear();
+                System.out.println("[]");
+                break;
+            case("isEmpty"):
+                if(list.isEmpty()==true){
+                    System.out.println("True");
+                }
+                else{
+                    System.out.println("False");
+                }
+                break;
+            case("remove"):
+                int removeIndex = sc.nextInt();
+                if(removeIndex<list.size && removeIndex>=0){
+                    list.remove(removeIndex);
+                    list.printList(list.head);
+                }
+                else
+                    System.out.println("Error");
+                break;
+            case("size"):
+                System.out.println(list.size());
+                break;
+            case("sublist"):
+                int startIndex = sc.nextInt();
+                int endIndex = sc.nextInt();
+                if(startIndex<list.size && endIndex<list.size && startIndex<=endIndex && startIndex>=0){
+                    DoubleLinkedList sblst = (DoubleLinkedList) list.sublist(startIndex, endIndex);
+                    list.printList(sblst.head);
+                }
+                else
+                    System.out.println("Error");
+                break;
+            case("contains"):
+                int valueOfMissingElement = sc.nextInt();
+                if(list.contains(valueOfMissingElement)==true){
+                    System.out.println("True");
+                }
+                else{
+                    System.out.println("False");
+                }
+                break;
             default:
+                sc.close();
                 return;   
-        } */ 
+        }
+        
     }
 }
