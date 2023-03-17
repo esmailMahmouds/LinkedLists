@@ -1,4 +1,3 @@
-package lab4;
 import java.io.*;
 import java.util.*;
 import java.text.*;
@@ -147,14 +146,14 @@ public class SingleLinkedList implements ILinkedList {
             } 
             if(index==0)
                  addFrist(newNode);
-             else if(index==size-1)
-                  add(newNode.val);
              else
              {
              node p=getNode(index);
              node n=getNode(index-1);
              n.next=newNode;
              newNode.next=p;
+            if(index==size-1)
+                tail=newNode;     
              size++;
              }
     }
