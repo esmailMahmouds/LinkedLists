@@ -82,6 +82,10 @@ public class PolynomialSolver implements IPolynomialSolver{
                 for(int i=0; i<terms.length; i++){
                     C.add(terms[i][0],terms[i][1]);
                 }
+            case('R'):
+                for(int i=0; i<terms.length; i++){
+                    R.add(terms[i][0],terms[i][1]);
+                }
                 break;
             default:
                 break;
@@ -96,6 +100,8 @@ public class PolynomialSolver implements IPolynomialSolver{
                 return B.printList();
             case('C'):
                 return C.printList();
+            case('R'):
+                return R.printList();
             default:
                 return null;
         }
