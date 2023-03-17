@@ -149,10 +149,173 @@ public class PolynomialSolver implements IPolynomialSolver{
         }
         return val;
     }
-
-    public int[][] add(char poly1, char poly2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+    public int[][] add(char poly1, char poly2){
+        int[][] result = null;
+        int k=0;
+        if(poly1 == 'A' && poly2 == 'B' || poly1 == 'B' && poly2 == 'A'){
+            if(A.size >= B.size){
+                result = new int[A.size][2];
+                for(int i = 0;i<A.size;i++){
+                    int[] a = A.get(i);
+                    int[] b = B.get(0);
+                    if(a[1]!=b[1]){
+                        result[k][0] = a[0];
+                        result[k][1] = a[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<B.size;i++){
+                    int[] a = A.get(k);
+                    int[] b = B.get(i);
+                    result[k][0]=a[0]+b[0];
+                    result[k][1]=a[1];
+                    k++;
+                }
+            }
+            else{
+                result = new int[B.size][2];
+                for(int i = 0;i<B.size;i++){
+                    int[] b = B.get(i);
+                    int[] a = A.get(0);
+                    if(a[1]!=b[1]){
+                        result[k][0] = b[0];
+                        result[k][1] = b[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<A.size;i++){
+                    int[] a = A.get(i);
+                    int[] b = B.get(k);
+                    result[k][0]=a[0]+b[0];
+                    result[k][1]=b[1];
+                    k++;
+                }
+            }
+        }
+        else if(poly1 == 'A' && poly2 == 'C' || poly1 == 'C' && poly2 == 'A'){
+            if(A.size > C.size){
+                result = new int[A.size][2];
+                for(int i = 0;i<A.size;i++){
+                    int[] a = A.get(i);
+                    int[] c = C.get(0);
+                    if(a[1]!=c[1]){
+                        result[k][0] = a[0];
+                        result[k][1] = a[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<C.size;i++){
+                    int[] a = A.get(k);
+                    int[] c = C.get(i);
+                    result[k][0]=a[0]+c[0];
+                    result[k][1]=a[1];
+                    k++;
+                }
+            }
+            else{
+                result = new int[C.size][2];
+                for(int i = 0;i<C.size;i++){
+                    int[] a = A.get(0);
+                    int[] c = C.get(i);
+                    if(a[1]!=c[1]){
+                        result[k][0] = c[0];
+                        result[k][1] = c[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<A.size;i++){
+                    int[] a = A.get(i);
+                    int[] c = C.get(k);
+                    result[k][0]=a[0]+c[0];
+                    result[k][1]=c[1];
+                    k++;
+                }
+            }
+        }
+        else if(poly1 == 'B' && poly2 == 'C' || poly1 == 'C' && poly2 == 'B'){
+            if(B.size > C.size){
+                for(int i = 0;i<B.size;i++){
+                    int[] b = B.get(i);
+                    int[] c = C.get(0);
+                    if(b[1]!=c[1]){
+                        result[k][0] = b[0];
+                        result[k][1] = b[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<C.size;i++){
+                    int[] b = B.get(k);
+                    int[] c = C.get(i);
+                    result[k][0]=b[0]+c[0];
+                    result[k][1]=b[1];
+                    k++;
+                }
+            }
+            else{
+                result = new int[C.size][2];
+                for(int i = 0;i<C.size;i++){
+                    int[] b = B.get(0);
+                    int[] c = C.get(i);
+                    if(b[1]!=c[1]){
+                        result[k][0] = c[0];
+                        result[k][1] = c[1];
+                        k++;
+                    }
+                    else{
+                        break;
+                    }
+                }
+                for(int i = 0;i<B.size;i++){
+                    int[] b = B.get(i);
+                    int[] c = C.get(k);
+                    result[k][0]=b[0]+c[0];
+                    result[k][1]=c[1];
+                    k++;
+                }
+            }
+        }
+        else if(poly1 == poly2){
+            if(poly1 == 'A'){
+                result = new int [A.size][2];
+                for(int i = 0;i<A.size;i++){
+                    int[] a = A.get(i);
+                    result[i][0] = 2*a[0];
+                    result[i][1] = a[1]; 
+                }
+            }
+            else if(poly1 == 'B'){
+                result = new int [B.size][2];
+                for(int i = 0;i<B.size;i++){
+                    int[] b = B.get(i);
+                    result[i][0] = 2*b[0];
+                    result[i][1] = b[1]; 
+                }
+            }
+            else{
+                result = new int [C.size][2];
+                for(int i = 0;i<C.size;i++){
+                    int[] c = C.get(i);
+                    result[i][0] = 2*c[0];
+                    result[i][1] = c[1]; 
+                }
+            }
+        }
+        return result;
     }
 
     public int[][] subtract(char poly1, char poly2) {
@@ -192,7 +355,10 @@ public class PolynomialSolver implements IPolynomialSolver{
                 System.out.println(solver.print(idpr));   
                 break;
             case("add"):
-                        
+                char idad1 = sc.nextLine().charAt(0);
+                char idad2 = sc.nextLine().charAt(0);
+                solver.setPolynomial('R',solver.add(idad1,idad2));
+                System.out.println(solver.print('R'));
                 break;
             case("sub"):
                             
@@ -273,7 +439,9 @@ class DoubleLinkedList{
     public int[] get(int index){
         Node arwd = head;
         for(int i=0;i<index;i++){
-            arwd = arwd.next;
+            if(arwd.next!=null){
+                arwd = arwd.next;
+            }
         }
         int arr[] = {arwd.cof,arwd.exp};
         return arr;
