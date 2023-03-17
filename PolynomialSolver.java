@@ -105,18 +105,43 @@ public class PolynomialSolver implements IPolynomialSolver{
         switch(poly){
             case('A'):
                 A.clear();
+                break;
             case('B'):
                 B.clear();
+                break;
             case('C'):
                 C.clear();
+                break;
             default:
                 break;
         }
     }
 
     public float evaluatePolynomial(char poly, float value) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'evaluatePolynomial'");
+        float val = 0;
+        switch(poly){
+            case('A'):
+                for(int i = 0;i<A.size();i++) {
+                    int[] tmp = A.get(i);
+                    val += tmp[0]*Math.pow(value,tmp[1]);    
+                }
+                break;
+            case('B'):
+                for(int i = 0;i<B.size();i++) {
+                    int[] tmp = B.get(i);
+                    val += tmp[0]*Math.pow(value,tmp[1]);    
+                }
+                break;
+            case('C'):
+                for(int i = 0;i<B.size();i++) {
+                    int[] tmp = B.get(i);
+                    val += tmp[0]*Math.pow(value,tmp[1]);    
+                }
+                break;
+            default:
+                break;
+        }
+        return val;
     }
 
     public int[][] add(char poly1, char poly2) {
@@ -175,7 +200,9 @@ public class PolynomialSolver implements IPolynomialSolver{
                 System.out.println("[]");
                 break;
             case("eval"):
-                                
+                char idev = sc.nextLine().charAt(0);
+                float value = sc.nextFloat();
+                System.out.println(solver.evaluatePolynomial(idev,value));                
                 break;
             default:
                 break;
@@ -235,7 +262,7 @@ class DoubleLinkedList{
         size++;
     }
     
-    public Object get(int index){
+    public int[] get(int index){
         Node arwd = head;
         for(int i=0;i<index;i++){
             arwd = arwd.next;
