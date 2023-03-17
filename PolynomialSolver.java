@@ -671,11 +671,17 @@ public class PolynomialSolver implements IPolynomialSolver{
                     System.out.println("Error");
                     return;
                 }
-                float value = sc.nextFloat();
-                if(value == Math.round(value))
-                   System.out.printf("%d",(int)solver.evaluatePolynomial(idev,value));
-                else
-                   System.out.printf("%f",solver.evaluatePolynomial(idev,value));                
+                try{
+                    float value = sc.nextFloat();
+                    if(value == Math.round(value))
+                        System.out.printf("%d",(int)solver.evaluatePolynomial(idev,value));
+                    else
+                        System.out.printf("%f",solver.evaluatePolynomial(idev,value));
+                }
+                catch(InputMismatchException e){
+                    System.out.println("Error");
+                    return;
+                }               
                 break;
             default:
                 System.out.println("Error");
