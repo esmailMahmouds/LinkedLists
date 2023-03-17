@@ -95,9 +95,6 @@ public class PolynomialSolver implements IPolynomialSolver{
     public String print(char poly) {
         switch(poly){
             case('A'):
-                if(A.size == 0){
-                    return "Error";
-                }
                 return A.printList();
             case('B'):
                 return B.printList();
@@ -477,9 +474,6 @@ public class PolynomialSolver implements IPolynomialSolver{
                 }
             }
         }
-        else if(poly1 == poly2){
-            result = null;
-        }
         return result;
     }
 
@@ -562,6 +556,25 @@ public class PolynomialSolver implements IPolynomialSolver{
         return result;
     }
 
+    public boolean checkPoly(char poly){
+        if(poly == 'A'){
+            if(A.size == 0 || A.isEmpty())
+            return true;
+        }
+        else if(poly == 'B'){
+            if(B.size == 0 || B.isEmpty())
+            return true;
+        }
+        else if(poly == 'C'){
+            if(C.size == 0 || C.isEmpty())
+            return true;
+        }
+        else if(poly != 'A' && poly!='B' && poly!='C'){
+            return true;
+        }
+       return false;
+    }
+    
     public static void main(String[] args) {
     
         PolynomialSolver solver = new PolynomialSolver();
@@ -580,40 +593,84 @@ public class PolynomialSolver implements IPolynomialSolver{
                         terms[i][1]=k--;
                     }
                     catch(NumberFormatException e){
-                        break;
+                        System.out.println("Error");
+                        return;
                     }
                 }
                 solver.setPolynomial(idst, terms);
                 break;
             case("print"):
                 char idpr = sc.nextLine().charAt(0);
+                if(solver.checkPoly(idpr)){
+                    System.out.println("Error");
+                    return;
+                }
                 System.out.println(solver.print(idpr));   
                 break;
             case("add"):
                 char idad1 = sc.nextLine().charAt(0);
                 char idad2 = sc.nextLine().charAt(0);
+                if(solver.checkPoly(idad1)){
+                    System.out.println("Error");
+                    return;
+                }
+                if(solver.checkPoly(idad2)){
+                    System.out.println("Error");
+                    return;
+                }
                 solver.setPolynomial('R',solver.add(idad1,idad2));
                 System.out.println(solver.print('R'));
                 break;
             case("sub"):
                 char idsb1 = sc.nextLine().charAt(0);
                 char idsb2 = sc.nextLine().charAt(0);
+                if(solver.checkPoly(idsb1)){
+                    System.out.println("Error");
+                    return;
+                }
+                if(solver.checkPoly(idsb2)){
+                    System.out.println("Error");
+                    return;
+                }
+                if(idsb1 == idsb2){
+                    System.out.println("0");
+                    return;
+                }
                 solver.setPolynomial('R',solver.subtract(idsb1,idsb2));
                 System.out.println(solver.print('R'));            
                 break;
             case("mult"):
                 char idmb1 = sc.nextLine().charAt(0);
                 char idmb2 = sc.nextLine().charAt(0);
+                if(solver.checkPoly(idmb1)){
+                    System.out.println("Error");
+                    return;
+                }
+                if(solver.checkPoly(idmb2)){
+                    System.out.println("Error");
+                    return;
+                }
                 solver.setPolynomial('R',solver.multiply(idmb1,idmb2));
                 System.out.println(solver.print('R'));                
                 break;
             case("clear"):
                 char idcr = sc.nextLine().charAt(0);
+                  if(solver.checkPoly(idcr)){
+                    System.out.println("Error");
+                    return;
+                }
                 solver.clearPolynomial(idcr);
+                if(sc.hasNextLine()){
+                    break;
+                }
                 System.out.println("[]");
                 break;
             case("eval"):
                 char idev = sc.nextLine().charAt(0);
+                if(solver.checkPoly(idev)){
+                    System.out.println("Error");
+                    return;
+                }
                 float value = sc.nextFloat();
                 if(value == Math.round(value))
                    System.out.printf("%d",(int)solver.evaluatePolynomial(idev,value));
@@ -621,7 +678,8 @@ public class PolynomialSolver implements IPolynomialSolver{
                    System.out.printf("%f",solver.evaluatePolynomial(idev,value));                
                 break;
             default:
-                break;
+                System.out.println("Error");
+                return;
           }
         }while(sc.hasNextLine());
     }
@@ -739,8 +797,21 @@ class DoubleLinkedList{
     }
 
     public String printList(){
-        String eq = "";
         Node node = head;
+        int fnd = 0;
+        while(node != null){
+            fnd = 0;
+            if(node.cof != 0){
+                fnd=1;
+                break;
+            }
+            node = node.next;
+        }
+        if(fnd == 0){
+            return "0";
+        }
+        String eq = "";
+        node = head;
         if(node.exp == 0){
             if(node.cof == 1)
                 eq += "1";
