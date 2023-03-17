@@ -102,8 +102,16 @@ public class PolynomialSolver implements IPolynomialSolver{
     }
 
     public void clearPolynomial(char poly) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'clearPolynomial'");
+        switch(poly){
+            case('A'):
+                A.clear();
+            case('B'):
+                B.clear();
+            case('C'):
+                C.clear();
+            default:
+                break;
+        }
     }
 
     public float evaluatePolynomial(char poly, float value) {
@@ -133,7 +141,7 @@ public class PolynomialSolver implements IPolynomialSolver{
           String ky = sc.nextLine();
           switch(ky){
            case("set"):
-                char id = sc.nextLine().charAt(0);
+                char idst = sc.nextLine().charAt(0);
                 String s1 = sc.nextLine().replaceAll("\\[|\\]","");
                 String[] s = s1.split(",",0);
                 int[][] terms = new int[s.length][2];
@@ -146,11 +154,11 @@ public class PolynomialSolver implements IPolynomialSolver{
                         break;
                     }
                 }
-                solver.setPolynomial(id, terms);
-                System.out.println(solver.print(id));
+                solver.setPolynomial(idst, terms);
                 break;
             case("print"):
-                    
+                char idpr = sc.nextLine().charAt(0);
+                System.out.println(solver.print(idpr));   
                 break;
             case("add"):
                         
@@ -162,7 +170,9 @@ public class PolynomialSolver implements IPolynomialSolver{
                                 
                 break;
             case("clear"):
-                                
+                char idcr = sc.nextLine().charAt(0);
+                solver.clearPolynomial(idcr);
+                System.out.println("[]");
                 break;
             case("eval"):
                                 
@@ -225,7 +235,16 @@ class DoubleLinkedList{
         size++;
     }
     
-    public void set(int index,int cof,int exp) {
+    public Object get(int index){
+        Node arwd = head;
+        for(int i=0;i<index;i++){
+            arwd = arwd.next;
+        }
+        int arr[] = {arwd.cof,arwd.exp};
+        return arr;
+    }
+    
+    public void set(int index,int cof,int exp){
         Node node = new Node(cof,exp,null,null);
         Node tmp = head;
         for(int i=0;i<index;i++){
@@ -239,16 +258,16 @@ class DoubleLinkedList{
         node.prev = bfrTmp;
     }
     
-    public void clear() {
+    public void clear(){
         head = tail = null;
         size = 0;
     }
     
-    public boolean isEmpty() {
+    public boolean isEmpty(){
         return head == null;
     }
     
-    public void remove(int index) {
+    public void remove(int index){
         Node tmp = head;
         for(int i=0;i<index;i++){
             tmp = tmp.next;
@@ -260,11 +279,11 @@ class DoubleLinkedList{
         size--;
     }
     
-    public int size() {
+    public int size(){
         return size;
     }
     
-    public DoubleLinkedList sublist(int fromIndex, int toIndex) {
+    public DoubleLinkedList sublist(int fromIndex, int toIndex){
         DoubleLinkedList Sblst = new DoubleLinkedList(); 
         Node begTmp = head;
         for(int i=0;i<size;i++){
@@ -284,7 +303,7 @@ class DoubleLinkedList{
                 eq += "1";
             else if(node.cof == -1)
                 eq += "-1";
-            else
+            else if(node.cof != 0)
                 eq += String.format("%d",node.cof);
         }
         else if(node.exp == 1){
@@ -292,7 +311,7 @@ class DoubleLinkedList{
                 eq += "x";
             else if(node.cof == -1)
                 eq += "-x";
-            else
+            else if(node.cof != 0)
                 eq += String.format("%dx",node.cof);
         }
         else{
@@ -300,7 +319,7 @@ class DoubleLinkedList{
                 eq += String.format("x^%d",node.exp);
             else if(node.cof == -1)
                 eq += String.format("-x^%d",node.exp);
-            else
+            else if(node.cof != 0)
                 eq += String.format("%dx^%d",node.cof,node.exp);
         }
         while(node.next != null){
@@ -310,7 +329,7 @@ class DoubleLinkedList{
                     eq += "+1";
                 else if(node.cof == -1)
                     eq += "-1";
-                else
+                else if(node.cof != 0)
                     eq += String.format("%+d",node.cof);
             }
             else if(node.exp == 1){
@@ -318,7 +337,7 @@ class DoubleLinkedList{
                     eq += "+x";
                 else if(node.cof == -1)
                     eq += "-x";
-                else
+                else if(node.cof != 0)
                     eq += String.format("%+dx",node.cof);
             }
             else{
@@ -326,7 +345,7 @@ class DoubleLinkedList{
                     eq += String.format("+x^%d",node.exp);
                 else if(node.cof == -1)
                     eq += String.format("-x^%d",node.exp);
-                else
+                else if(node.cof != 0)
                     eq += String.format("%+dx^%d",node.cof,node.exp);
             }
         }
