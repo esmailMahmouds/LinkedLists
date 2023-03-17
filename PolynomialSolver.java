@@ -202,13 +202,15 @@ public class PolynomialSolver implements IPolynomialSolver{
             case("eval"):
                 char idev = sc.nextLine().charAt(0);
                 float value = sc.nextFloat();
-                System.out.println(solver.evaluatePolynomial(idev,value));                
+                if(value == Math.round(value))
+                   System.out.printf("%d",(int)solver.evaluatePolynomial(idev,value));
+                else
+                   System.out.printf("%f",solver.evaluatePolynomial(idev,value));                
                 break;
             default:
                 break;
           }
         }while(sc.hasNextLine());
-
     }
 }
 
