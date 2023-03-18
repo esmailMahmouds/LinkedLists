@@ -1,9 +1,4 @@
-import java.io.*;
 import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
-
 
 interface IPolynomialSolver {
     /**
@@ -69,20 +64,24 @@ public class PolynomialSolver implements IPolynomialSolver{
     
         switch(poly){
             case('A'):
+                A.clear();
                 for(int i=0; i<terms.length; i++){
                         A.add(terms[i][0],terms[i][1]);
                 }
                 break;
             case('B'):
+                B.clear();
                 for(int i=0; i<terms.length; i++){
                     B.add(terms[i][0],terms[i][1]);
                 }
                 break;
             case('C'):
+                C.clear();
                 for(int i=0; i<terms.length; i++){
                     C.add(terms[i][0],terms[i][1]);
                 }
             case('R'):
+                R.clear();
                 for(int i=0; i<terms.length; i++){
                     R.add(terms[i][0],terms[i][1]);
                 }
@@ -139,8 +138,8 @@ public class PolynomialSolver implements IPolynomialSolver{
                 }
                 break;
             case('C'):
-                for(int i = 0;i<B.size();i++) {
-                    int[] tmp = B.get(i);
+                for(int i = 0;i<C.size();i++) {
+                    int[] tmp = C.get(i);
                     val += tmp[0]*Math.pow(value,tmp[1]);    
                 }
                 break;
@@ -569,14 +568,14 @@ public class PolynomialSolver implements IPolynomialSolver{
             if(C.size == 0 || C.isEmpty())
             return true;
         }
-        else if(poly != 'A' && poly!='B' && poly!='C'){
+        else if(poly!='A' && poly!='B' && poly!='C'){
             return true;
         }
        return false;
     }
     
     public static void main(String[] args) {
-    
+        
         PolynomialSolver solver = new PolynomialSolver();
         Scanner sc = new Scanner(System.in);
         do{
@@ -584,6 +583,10 @@ public class PolynomialSolver implements IPolynomialSolver{
           switch(ky){
            case("set"):
                 char idst = sc.nextLine().charAt(0);
+                if(idst!='A' && idst!='B' && idst!='C'){
+                    System.out.println("Error");
+                    return;
+                }
                 String s1 = sc.nextLine().replaceAll("\\[|\\]","");
                 String[] s = s1.split(",",0);
                 int[][] terms = new int[s.length][2];
@@ -633,11 +636,12 @@ public class PolynomialSolver implements IPolynomialSolver{
                     return;
                 }
                 if(idsb1 == idsb2){
-                    System.out.println("0");
-                    return;
+                    System.out.println("");
                 }
-                solver.setPolynomial('R',solver.subtract(idsb1,idsb2));
-                System.out.println(solver.print('R'));            
+                else{
+                    solver.setPolynomial('R',solver.subtract(idsb1,idsb2));
+                    System.out.println(solver.print('R'));  
+                 }         
                 break;
             case("mult"):
                 char idmb1 = sc.nextLine().charAt(0);
@@ -673,10 +677,13 @@ public class PolynomialSolver implements IPolynomialSolver{
                 }
                 try{
                     float value = sc.nextFloat();
+                    if(sc.hasNextLine()){
+                       sc.nextLine();
+                    }
                     if(value == Math.round(value))
-                        System.out.printf("%d",(int)solver.evaluatePolynomial(idev,value));
+                        System.out.printf("%d\n",(int)solver.evaluatePolynomial(idev,value));
                     else
-                        System.out.printf("%f",solver.evaluatePolynomial(idev,value));
+                        System.out.printf("%f\n",solver.evaluatePolynomial(idev,value));
                 }
                 catch(InputMismatchException e){
                     System.out.println("Error");
@@ -688,6 +695,7 @@ public class PolynomialSolver implements IPolynomialSolver{
                 return;
           }
         }while(sc.hasNextLine());
+        sc.close();
     }
 }
 class DoubleLinkedList{
@@ -710,21 +718,6 @@ class DoubleLinkedList{
     public DoubleLinkedList(){
         this.head = null;
         this.tail = null;
-    }
-    
-    public void add(int index,int cof, int exp){
-        Node node = new Node(cof,exp,null,null);
-        Node tmp1 = head;
-        Node tmp2;
-        for(int i=0;i<index;i++){
-            tmp1 = tmp1.next;
-        }
-        tmp2 = tmp1.prev;
-        tmp2.next = node;
-        node.prev = tmp2;
-        tmp1.prev = node;
-        node.next = tmp1;
-        size++;
     }
     
     public void add(int cof, int exp){
@@ -751,20 +744,6 @@ class DoubleLinkedList{
         return arr;
     }
     
-    public void set(int index,int cof,int exp){
-        Node node = new Node(cof,exp,null,null);
-        Node tmp = head;
-        for(int i=0;i<index;i++){
-            tmp = tmp.next;
-        }
-        Node aftrTmp = tmp.next;
-        Node bfrTmp = tmp.prev;
-        aftrTmp.prev = node;
-        bfrTmp.next = node;
-        node.next = aftrTmp;
-        node.prev = bfrTmp;
-    }
-    
     public void clear(){
         head = tail = null;
         size = 0;
@@ -774,32 +753,8 @@ class DoubleLinkedList{
         return head == null;
     }
     
-    public void remove(int index){
-        Node tmp = head;
-        for(int i=0;i<index;i++){
-            tmp = tmp.next;
-        }
-        Node aftrTmp = tmp.next;
-        Node bfrTmp = tmp.prev;
-        aftrTmp.prev = bfrTmp;
-        bfrTmp.next = aftrTmp;
-        size--;
-    }
-    
     public int size(){
         return size;
-    }
-    
-    public DoubleLinkedList sublist(int fromIndex, int toIndex){
-        DoubleLinkedList Sblst = new DoubleLinkedList(); 
-        Node begTmp = head;
-        for(int i=0;i<size;i++){
-           if(i>=fromIndex && i<=toIndex){
-                Sblst.add(begTmp.cof,begTmp.exp);
-            }
-            begTmp = begTmp.next;
-        }
-        return Sblst;
     }
 
     public String printList(){
@@ -814,10 +769,13 @@ class DoubleLinkedList{
             node = node.next;
         }
         if(fnd == 0){
-            return "0";
+            return "";
         }
         String eq = "";
         node = head;
+        while(node.cof == 0){
+            node=node.next;
+        }
         if(node.exp == 0){
             if(node.cof == 1)
                 eq += "1";
