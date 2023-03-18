@@ -350,7 +350,7 @@ public class PolynomialSolver implements IPolynomialSolver{
                     int[] b = B.get(i);
                     int[] a = A.get(0);
                     if(a[1]!=b[1]){
-                        result[k][0] = b[0];
+                        result[k][0] = -b[0];
                         result[k][1] = b[1];
                         k++;
                     }
@@ -401,7 +401,7 @@ public class PolynomialSolver implements IPolynomialSolver{
                     int[] a = A.get(0);
                     int[] c = C.get(i);
                     if(a[1]!=c[1]){
-                        result[k][0] = c[0];
+                        result[k][0] = -c[0];
                         result[k][1] = c[1];
                         k++;
                     }
@@ -451,7 +451,7 @@ public class PolynomialSolver implements IPolynomialSolver{
                     int[] b = B.get(0);
                     int[] c = C.get(i);
                     if(b[1]!=c[1]){
-                        result[k][0] = c[0];
+                        result[k][0] = -c[0];
                         result[k][1] = c[1];
                         k++;
                     }
@@ -779,24 +779,18 @@ class DoubleLinkedList{
         if(node.exp == 0){
             if(node.cof == 1)
                 eq += "1";
-            else if(node.cof == -1)
-                eq += "-1";
             else if(node.cof != 0)
                 eq += String.format("%d",node.cof);
         }
         else if(node.exp == 1){
             if(node.cof == 1)
                 eq += "x";
-            else if(node.cof == -1)
-                eq += "-x";
             else if(node.cof != 0)
                 eq += String.format("%dx",node.cof);
         }
         else{
             if(node.cof == 1)
                 eq += String.format("x^%d",node.exp);
-            else if(node.cof == -1)
-                eq += String.format("-x^%d",node.exp);
             else if(node.cof != 0)
                 eq += String.format("%dx^%d",node.cof,node.exp);
         }
@@ -805,24 +799,18 @@ class DoubleLinkedList{
             if(node.exp == 0){
                 if(node.cof == 1)
                     eq += "+1";
-                else if(node.cof == -1)
-                    eq += "-1";
                 else if(node.cof != 0)
                     eq += String.format("%+d",node.cof);
             }
             else if(node.exp == 1){
                 if(node.cof == 1)
                     eq += "+x";
-                else if(node.cof == -1)
-                    eq += "-x";
                 else if(node.cof != 0)
                     eq += String.format("%+dx",node.cof);
             }
             else{
                 if(node.cof == 1)
                     eq += String.format("+x^%d",node.exp);
-                else if(node.cof == -1)
-                    eq += String.format("-x^%d",node.exp);
                 else if(node.cof != 0)
                     eq += String.format("%+dx^%d",node.cof,node.exp);
             }
